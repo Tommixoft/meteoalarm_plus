@@ -58,19 +58,37 @@ async def test_upcoming_alert_is_reported_by_default(
 
     alert = hass.states.get(entity_id(hass, config_entry, "binary_sensor", "alert"))
     assert alert.state == STATE_ON
-    assert alert.attributes["awareness_level"] == "yellow"
-    assert alert.attributes["awareness_type"] == "fog"
+    assert alert.attributes["level"] == "yellow"
+    assert alert.attributes["alert_type"] == "fog"
     assert alert.attributes["event"] == "Dangerous fog"
     assert (
         hass.states.get(entity_id(hass, config_entry, "sensor", "highest_level")).state == "yellow"
     )
     count = hass.states.get(entity_id(hass, config_entry, "sensor", "alert_count"))
     assert count.state == "1"
-    assert [item["awareness_type"] for item in count.attributes["alerts"]] == ["fog"]
+    assert [item["alert_type"] for item in count.attributes["alerts"]] == ["fog"]
     assert (
         hass.states.get(entity_id(hass, config_entry, "event", "alert_change")).state
         == STATE_UNKNOWN
     )
+
+
+@pytest.mark.usefixtures("mock_feed")
+async def test_alert_attributes_match_core_meteoalarm_for_lovelace_cards(
+    hass: HomeAssistant, freezer: FrozenDateTimeFactory, config_entry: MockConfigEntry
+) -> None:
+    freezer.move_to(BEFORE_FOG)
+    await setup_entry(hass, config_entry)
+
+    attributes = hass.states.get(entity_id(hass, config_entry, "binary_sensor", "alert")).attributes
+
+    assert attributes["attribution"] == "Information provided by MeteoAlarm"
+    assert attributes["awareness_level"] == "2; yellow; Moderate"
+    assert attributes["awareness_type"] == "4; Fog"
+    assert attributes["severity"] == "Moderate"
+    assert attributes["senderName"]
+    assert attributes["effective"]
+    assert not {"status", "state", "id", "category"} & attributes.keys()
 
 
 @pytest.mark.usefixtures("mock_feed")
@@ -132,7 +150,7 @@ async def test_expiry_switches_state_without_polling(
     assert hass.states.get(alert_id).state == STATE_OFF
     event = hass.states.get(entity_id(hass, config_entry, "event", "alert_change"))
     assert event.attributes["event_type"] == "alert_ended"
-    assert event.attributes["awareness_type"] == "fog"
+    assert event.attributes["alert_type"] == "fog"
     assert mock_feed.call_count == 1
 
 
@@ -210,4 +228,4 @@ async def test_diagnostics_include_feed_and_selection(
     diagnostics = await async_get_config_entry_diagnostics(hass, config_entry)
 
     assert len(diagnostics["feed"]["warnings"]) == 14
-    assert [alert["awareness_type"] for alert in diagnostics["selected_alerts"]] == ["fog"]
+    assert [alert["alert_type"] for alert in diagnostics["selected_alerts"]] == ["fog"]

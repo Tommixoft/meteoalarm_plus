@@ -77,7 +77,7 @@ MeteoAlarm uses green updates to announce that a warning is over.
 | `flooding` | 12 | Flooding |
 | `rain_flood` | 13 | Rain / flood |
 
-Alerts with a code not in this list are always reported (their `awareness_type` attribute shows the numeric code).
+Alerts with a code not in this list are always reported (their `alert_type` attribute shows the numeric code).
 
 **Countries:** austria, belgium, bosnia-herzegovina, bulgaria, croatia, cyprus, czechia, denmark, estonia,
 finland, france, germany, greece, hungary, iceland, ireland, israel, italy, latvia, lithuania, luxembourg,
@@ -90,12 +90,49 @@ One device per entry, with:
 
 | Entity | State | Attributes |
 |---|---|---|
-| `binary_sensor.<name>_alert` | `on` while at least one alert passes the filters | Most dangerous alert: `event`, `headline`, `description`, `instruction`, `awareness_level`, `awareness_type`, `severity`, `urgency`, `certainty`, `onset`, `expires`, `area`, `regions`, … |
+| `binary_sensor.<name>_alert` | `on` while at least one alert passes the filters | Most dangerous alert, see [alert attributes](#alert-attributes) |
 | `sensor.<name>_highest_awareness_level` | `none`, `yellow`, `orange`, `red` | — |
-| `sensor.<name>_alert_count` | number of alerts | `alerts`: list of all alerts (level, type, headline, onset, expires, …), most dangerous first |
-| `event.<name>_alert_change` | time of last change | `event_type`: `alert_issued`, `alert_updated`, `alert_ended`, plus the alert's fields |
+| `sensor.<name>_alert_count` | number of alerts | `alerts`: all alerts, most dangerous first (summary fields below) |
+| `event.<name>_alert_change` | time of last change | `event_type`: `alert_issued`, `alert_updated`, `alert_ended`, plus the alert's summary fields |
 
 States change exactly at an alert's onset or expiry, not only on the next download.
+
+### Alert attributes
+
+Summary fields (binary sensor, `alerts` list items, change events):
+
+| Attribute | Example | Notes |
+|---|---|---|
+| `level` | `yellow` | Same values as `min_level` and the highest-level sensor |
+| `alert_type` | `fog` | Same values as `ignored_types`; numeric code for unknown types |
+| `awareness_level` | `2; yellow; Moderate` | Core `meteoalarm` format, read by Lovelace cards |
+| `awareness_type` | `4; Fog` | Core `meteoalarm` format, read by Lovelace cards |
+| `event`, `headline`, `severity` | `Dangerous fog`, …, `Moderate` | In the configured language |
+| `onset`, `expires` | ISO timestamps | |
+| `identifier`, `regions` | | MeteoAlarm alert ID, EMMA_IDs it covers |
+
+The binary sensor adds `description`, `instruction`, `urgency`, `certainty`, `effective`, `area`,
+`senderName`, `language` and `web`.
+
+### Lovelace cards
+
+The binary sensor uses the same attributes as the built-in `meteoalarm` integration, so cards made
+for it work unchanged. They show the most dangerous alert that passes your filters:
+
+- [MeteoalarmCard](https://github.com/MrBartusek/MeteoalarmCard) with `integration: meteoalarm`
+- [Weather Alerts Card](https://github.com/seevee/weather_alerts_card), detected automatically
+
+```yaml
+type: custom:meteoalarm-card
+integration: meteoalarm
+entities: binary_sensor.meteoalarm_lithuania_vilnius_county_alert
+```
+
+```yaml
+type: custom:weather-alerts-card
+entity: binary_sensor.meteoalarm_lithuania_vilnius_county_alert
+colorTheme: meteoalarm
+```
 
 ### Notification example
 
@@ -111,7 +148,7 @@ actions:
     data:
       title: "{{ trigger.to_state.attributes.headline }}"
       message: >
-        {{ trigger.to_state.attributes.awareness_level | title }}:
+        {{ trigger.to_state.attributes.level | title }}:
         {{ trigger.to_state.attributes.onset | as_datetime | as_local }} –
         {{ trigger.to_state.attributes.expires | as_datetime | as_local }}
 ```

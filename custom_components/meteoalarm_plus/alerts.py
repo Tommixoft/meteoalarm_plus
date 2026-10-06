@@ -39,6 +39,7 @@ class Alert:
     type_slug: str | None
     type_name: str
     onset: datetime
+    effective: datetime
     expires: datetime
     areas: tuple[tuple[str, str], ...]
     sender_name: str
@@ -212,6 +213,7 @@ def _parse_alert(raw: Mapping[str, Any], language: str) -> Alert | None:
         type_slug=AWARENESS_TYPES.get(type_code),
         type_name=type_name.strip(),
         onset=_parse_datetime(info.get("onset") or info.get("effective") or raw["sent"]),
+        effective=_parse_datetime(info.get("effective") or raw["sent"]),
         expires=_parse_datetime(info["expires"]),
         areas=_parse_areas(info.get("area", [])),
         sender_name=info.get("senderName", ""),

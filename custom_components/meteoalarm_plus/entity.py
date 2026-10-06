@@ -8,7 +8,13 @@ from homeassistant.helpers.device_registry import DeviceEntryType, DeviceInfo
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .alerts import Alert
-from .const import ATTRIBUTION, CONF_REGIONS, DOMAIN
+from .const import (
+    ATTRIBUTION,
+    AWARENESS_LEVEL_TEXTS,
+    AWARENESS_TYPE_TEXTS,
+    CONF_REGIONS,
+    DOMAIN,
+)
 from .coordinator import MeteoAlarmCoordinator
 
 # State attributes share a 16 KiB budget; long free-text fields are cut to keep many alerts within it.
@@ -37,13 +43,22 @@ class MeteoAlarmEntity(CoordinatorEntity[MeteoAlarmCoordinator]):
 
 
 def alert_summary(alert: Alert) -> dict[str, Any]:
-    """Compact alert description used in list attributes and events."""
+    """Compact alert description used in list attributes and events.
+
+    awareness_level / awareness_type keep the core meteoalarm format ("2; yellow; Moderate",
+    "4; Fog") that MeteoAlarm cards parse; level / alert_type carry the plain names used by
+    this integration's options and sensors.
+    """
     return {
         "identifier": alert.identifier,
         "event": alert.event,
         "headline": alert.headline,
-        "awareness_level": alert.level.slug,
-        "awareness_type": alert.type_slug or str(alert.type_code),
+        "awareness_level": AWARENESS_LEVEL_TEXTS[alert.level],
+        "awareness_type": AWARENESS_TYPE_TEXTS.get(
+            alert.type_code, f"{alert.type_code}; {alert.type_name}"
+        ),
+        "level": alert.level.slug,
+        "alert_type": alert.type_slug or str(alert.type_code),
         "severity": alert.severity,
         "onset": alert.onset.isoformat(),
         "expires": alert.expires.isoformat(),
@@ -52,16 +67,20 @@ def alert_summary(alert: Alert) -> dict[str, Any]:
 
 
 def alert_details(alert: Alert) -> dict[str, Any]:
-    """Full alert description, using the attribute names of the core meteoalarm integration."""
+    """Full alert description, using the attribute names of the core meteoalarm integration.
+
+    Never add status, state, id or category: Lovelace alert cards use those keys to detect
+    other providers or to decide whether an alert is active.
+    """
     return {
         **alert_summary(alert),
         "description": _truncate(alert.description),
         "instruction": _truncate(alert.instruction),
         "urgency": alert.urgency,
         "certainty": alert.certainty,
-        "awareness_type_name": alert.type_name,
+        "effective": alert.effective.isoformat(),
         "area": ", ".join(name for _, name in alert.areas),
-        "sender": alert.sender_name,
+        "senderName": alert.sender_name,
         "language": alert.language,
         "web": alert.web,
     }

@@ -104,6 +104,31 @@ AWARENESS_TYPES: dict[int, str] = {
 }
 
 
+# Canonical texts of the awareness_level / awareness_type parameters, as published by MeteoAlarm
+# and exposed by the core meteoalarm integration. Feeds vary in letter case, so attributes are
+# rebuilt from these instead of being passed through.
+AWARENESS_LEVEL_TEXTS: dict[AwarenessLevel, str] = {
+    AwarenessLevel.GREEN: "1; green; Minor",
+    AwarenessLevel.YELLOW: "2; yellow; Moderate",
+    AwarenessLevel.ORANGE: "3; orange; Severe",
+    AwarenessLevel.RED: "4; red; Extreme",
+}
+AWARENESS_TYPE_TEXTS: dict[int, str] = {
+    1: "1; Wind",
+    2: "2; snow-ice",
+    3: "3; Thunderstorm",
+    4: "4; Fog",
+    5: "5; high-temperature",
+    6: "6; low-temperature",
+    7: "7; coastalevent",
+    8: "8; forest-fire",
+    9: "9; avalanches",
+    10: "10; Rain",
+    12: "12; flooding",
+    13: "13; rain-flood",
+}
+
+
 class AlertChange(StrEnum):
     """Event types fired when the set of relevant alerts changes."""
 
