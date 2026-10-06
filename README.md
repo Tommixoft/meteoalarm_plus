@@ -167,6 +167,10 @@ docker run --rm -v "$PWD:/app" -w /app python:3.14 sh -c \
   "pip install -r requirements_test.txt && pytest"
 ```
 
+**Releasing:** bump `version` in `custom_components/meteoalarm_plus/manifest.json` and push to `main`.
+When validation passes, the release workflow creates the GitHub release `v<version>`, which HACS
+offers as an update. Versions like `0.3.0b1` become pre-releases.
+
 ## License
 
 [MIT](LICENSE)
