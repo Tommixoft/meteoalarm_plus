@@ -1,0 +1,166 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Choose country",
+        "data": {
+          "country": "Country"
+        },
+        "data_description": {
+          "country": "Country whose MeteoAlarm feed is followed."
+        }
+      },
+      "reconfigure": {
+        "title": "Change country",
+        "data": {
+          "country": "Country"
+        },
+        "data_description": {
+          "country": "Country whose MeteoAlarm feed is followed."
+        }
+      },
+      "regions": {
+        "title": "Choose regions",
+        "description": "The list shows regions that currently appear in the feed. Any other region can be typed as its EMMA_ID code (two letters and three digits, e.g. LT010). The code is shown in the address bar after clicking a region on {map_url}.",
+        "data": {
+          "regions": "Regions",
+          "language": "Language"
+        },
+        "data_description": {
+          "regions": "Alerts covering any of these regions are reported.",
+          "language": "Preferred language of alert texts; English is used when the alert has no text in this language."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to MeteoAlarm.",
+      "unknown_country": "MeteoAlarm has no feed for this country.",
+      "invalid_region": "Enter at least one region; each must be an EMMA_ID code such as LT010."
+    },
+    "abort": {
+      "already_configured": "These regions are already configured for this country.",
+      "reconfigure_successful": "Re-configuration was successful."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Alert filters",
+        "data": {
+          "min_level": "Minimum awareness level",
+          "ignored_types": "Ignored alert types",
+          "ignore_upcoming": "Ignore alerts that have not started yet",
+          "scan_interval": "Update interval"
+        },
+        "data_description": {
+          "min_level": "Alerts below this level are ignored.",
+          "ignored_types": "Alerts of these types are ignored.",
+          "ignore_upcoming": "When enabled, an alert is reported only from its onset time; otherwise as soon as it is published.",
+          "scan_interval": "How often the MeteoAlarm feed is downloaded."
+        }
+      }
+    }
+  },
+  "selector": {
+    "country": {
+      "options": {
+        "austria": "Austria",
+        "belgium": "Belgium",
+        "bosnia-herzegovina": "Bosnia and Herzegovina",
+        "bulgaria": "Bulgaria",
+        "croatia": "Croatia",
+        "cyprus": "Cyprus",
+        "czechia": "Czechia",
+        "denmark": "Denmark",
+        "estonia": "Estonia",
+        "finland": "Finland",
+        "france": "France",
+        "germany": "Germany",
+        "greece": "Greece",
+        "hungary": "Hungary",
+        "iceland": "Iceland",
+        "ireland": "Ireland",
+        "israel": "Israel",
+        "italy": "Italy",
+        "latvia": "Latvia",
+        "lithuania": "Lithuania",
+        "luxembourg": "Luxembourg",
+        "malta": "Malta",
+        "moldova": "Moldova",
+        "montenegro": "Montenegro",
+        "netherlands": "Netherlands",
+        "norway": "Norway",
+        "poland": "Poland",
+        "portugal": "Portugal",
+        "republic-of-north-macedonia": "North Macedonia",
+        "romania": "Romania",
+        "serbia": "Serbia",
+        "slovakia": "Slovakia",
+        "slovenia": "Slovenia",
+        "spain": "Spain",
+        "sweden": "Sweden",
+        "switzerland": "Switzerland",
+        "ukraine": "Ukraine",
+        "united-kingdom": "United Kingdom"
+      }
+    },
+    "min_level": {
+      "options": {
+        "yellow": "Yellow – potentially dangerous",
+        "orange": "Orange – dangerous",
+        "red": "Red – very dangerous"
+      }
+    },
+    "awareness_type": {
+      "options": {
+        "wind": "Wind",
+        "snow_ice": "Snow / ice",
+        "thunderstorm": "Thunderstorm",
+        "fog": "Fog",
+        "high_temperature": "High temperature",
+        "low_temperature": "Low temperature",
+        "coastal_event": "Coastal event",
+        "forest_fire": "Forest fire",
+        "avalanches": "Avalanches",
+        "rain": "Rain",
+        "flooding": "Flooding",
+        "rain_flood": "Rain / flood"
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "alert": {
+        "name": "Alert"
+      }
+    },
+    "sensor": {
+      "highest_level": {
+        "name": "Highest awareness level",
+        "state": {
+          "none": "None",
+          "yellow": "Yellow",
+          "orange": "Orange",
+          "red": "Red"
+        }
+      },
+      "alert_count": {
+        "name": "Alert count"
+      }
+    },
+    "event": {
+      "alert_change": {
+        "name": "Alert change",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "alert_issued": "Alert issued",
+              "alert_updated": "Alert updated",
+              "alert_ended": "Alert ended"
+            }
+          }
+        }
+      }
+    }
+  }
+}

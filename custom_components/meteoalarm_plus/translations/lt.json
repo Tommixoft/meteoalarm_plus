@@ -1,0 +1,166 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Pasirinkite šalį",
+        "data": {
+          "country": "Šalis"
+        },
+        "data_description": {
+          "country": "Šalis, kurios MeteoAlarm srautas stebimas."
+        }
+      },
+      "reconfigure": {
+        "title": "Pakeisti šalį",
+        "data": {
+          "country": "Šalis"
+        },
+        "data_description": {
+          "country": "Šalis, kurios MeteoAlarm srautas stebimas."
+        }
+      },
+      "regions": {
+        "title": "Pasirinkite regionus",
+        "description": "Sąraše rodomi regionai, šiuo metu esantys sraute. Kitą regioną galima įvesti jo EMMA_ID kodu (dvi raidės ir trys skaitmenys, pvz. LT010). Kodas matomas adreso juostoje paspaudus regioną {map_url}.",
+        "data": {
+          "regions": "Regionai",
+          "language": "Kalba"
+        },
+        "data_description": {
+          "regions": "Pranešama apie įspėjimus, apimančius bet kurį iš šių regionų.",
+          "language": "Pageidaujama įspėjimų teksto kalba; jei įspėjimas šia kalba neturi teksto, naudojama anglų."
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Nepavyko prisijungti prie MeteoAlarm.",
+      "unknown_country": "MeteoAlarm neturi šios šalies srauto.",
+      "invalid_region": "Įveskite bent vieną regioną; kiekvienas turi būti EMMA_ID kodas, pvz. LT010."
+    },
+    "abort": {
+      "already_configured": "Šie regionai šiai šaliai jau sukonfigūruoti.",
+      "reconfigure_successful": "Perkonfigūravimas sėkmingas."
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Įspėjimų filtrai",
+        "data": {
+          "min_level": "Minimalus įspėjimo lygis",
+          "ignored_types": "Ignoruojami įspėjimų tipai",
+          "ignore_upcoming": "Ignoruoti dar neprasidėjusius įspėjimus",
+          "scan_interval": "Atnaujinimo intervalas"
+        },
+        "data_description": {
+          "min_level": "Žemesnio lygio įspėjimai ignoruojami.",
+          "ignored_types": "Šių tipų įspėjimai ignoruojami.",
+          "ignore_upcoming": "Įjungus, įspėjimas rodomas tik nuo jo pradžios laiko; kitaip – vos paskelbus.",
+          "scan_interval": "Kaip dažnai atsisiunčiamas MeteoAlarm srautas."
+        }
+      }
+    }
+  },
+  "selector": {
+    "country": {
+      "options": {
+        "austria": "Austrija",
+        "belgium": "Belgija",
+        "bosnia-herzegovina": "Bosnija ir Hercegovina",
+        "bulgaria": "Bulgarija",
+        "croatia": "Kroatija",
+        "cyprus": "Kipras",
+        "czechia": "Čekija",
+        "denmark": "Danija",
+        "estonia": "Estija",
+        "finland": "Suomija",
+        "france": "Prancūzija",
+        "germany": "Vokietija",
+        "greece": "Graikija",
+        "hungary": "Vengrija",
+        "iceland": "Islandija",
+        "ireland": "Airija",
+        "israel": "Izraelis",
+        "italy": "Italija",
+        "latvia": "Latvija",
+        "lithuania": "Lietuva",
+        "luxembourg": "Liuksemburgas",
+        "malta": "Malta",
+        "moldova": "Moldova",
+        "montenegro": "Juodkalnija",
+        "netherlands": "Nyderlandai",
+        "norway": "Norvegija",
+        "poland": "Lenkija",
+        "portugal": "Portugalija",
+        "republic-of-north-macedonia": "Šiaurės Makedonija",
+        "romania": "Rumunija",
+        "serbia": "Serbija",
+        "slovakia": "Slovakija",
+        "slovenia": "Slovėnija",
+        "spain": "Ispanija",
+        "sweden": "Švedija",
+        "switzerland": "Šveicarija",
+        "ukraine": "Ukraina",
+        "united-kingdom": "Jungtinė Karalystė"
+      }
+    },
+    "min_level": {
+      "options": {
+        "yellow": "Geltonas – potencialiai pavojinga",
+        "orange": "Oranžinis – pavojinga",
+        "red": "Raudonas – labai pavojinga"
+      }
+    },
+    "awareness_type": {
+      "options": {
+        "wind": "Vėjas",
+        "snow_ice": "Sniegas / plikledis",
+        "thunderstorm": "Perkūnija",
+        "fog": "Rūkas",
+        "high_temperature": "Karštis",
+        "low_temperature": "Šaltis",
+        "coastal_event": "Pakrantės reiškiniai",
+        "forest_fire": "Miškų gaisrai",
+        "avalanches": "Lavinos",
+        "rain": "Lietus",
+        "flooding": "Potvynis",
+        "rain_flood": "Lietus / potvynis"
+      }
+    }
+  },
+  "entity": {
+    "binary_sensor": {
+      "alert": {
+        "name": "Įspėjimas"
+      }
+    },
+    "sensor": {
+      "highest_level": {
+        "name": "Aukščiausias įspėjimo lygis",
+        "state": {
+          "none": "Nėra",
+          "yellow": "Geltonas",
+          "orange": "Oranžinis",
+          "red": "Raudonas"
+        }
+      },
+      "alert_count": {
+        "name": "Įspėjimų skaičius"
+      }
+    },
+    "event": {
+      "alert_change": {
+        "name": "Įspėjimo pokytis",
+        "state_attributes": {
+          "event_type": {
+            "state": {
+              "alert_issued": "Įspėjimas paskelbtas",
+              "alert_updated": "Įspėjimas atnaujintas",
+              "alert_ended": "Įspėjimas baigėsi"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "entity": {
+    "binary_sensor": {
+      "alert": {
+        "default": "mdi:alert-outline",
+        "state": {
+          "on": "mdi:alert"
+        }
+      }
+    },
+    "sensor": {
+      "highest_level": {
+        "default": "mdi:alert-circle-outline",
+        "state": {
+          "none": "mdi:check-circle-outline"
+        }
+      },
+      "alert_count": {
+        "default": "mdi:counter"
+      }
+    },
+    "event": {
+      "alert_change": {
+        "default": "mdi:bell-alert-outline"
+      }
+    }
+  }
+}
