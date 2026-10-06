@@ -42,6 +42,10 @@ Lithuania:
 
 ### Filters (*Configure* on the integration entry)
 
+*Settings → Devices & services → MeteoAlarm Plus*, then the gear icon on the entry opens the filter options:
+
+![Configure button and filter options](https://raw.githubusercontent.com/Tommixoft/meteoalarm_plus/main/screens/config_screen.png)
+
 | Option | Key | Values | Default |
 |---|---|---|---|
 | Minimum awareness level | `min_level` | `yellow`, `orange`, `red` | `yellow` |
